@@ -920,6 +920,122 @@
             margin: 0;
         }
 
+        /* IMAGE MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            max-height: 85vh;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: var(--accent-yellow);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--text-light);
+            transform: scale(1.2);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(235, 231, 23, 0.2);
+            color: var(--accent-yellow);
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border-radius: 4px;
+        }
+
+        .modal-nav:hover {
+            background: var(--accent-yellow);
+            color: var(--primary-black);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-close {
+                top: 10px;
+                right: 10px;
+            }
+
+            .modal-nav {
+                padding: 0.75rem 1rem;
+                font-size: 1.2rem;
+            }
+
+            .modal-prev {
+                left: 10px;
+            }
+
+            .modal-next {
+                right: 10px;
+            }
+        }
+
         /* SPORT DESIGN HERO SECTION */
         .sport-design-section {
             position: relative;
@@ -1453,10 +1569,10 @@
         <div class="hero-content">
             <h1 class="hero-title">Tu marca en buenas manos. <span>¡Soluciones para todo tipo de empresas!</span></h1>
             <p class="hero-description">Llevamos tu negocio al siguiente nivel con estrategia digital, diseño excepcional y tecnología de punta.</p>
-            <button class="cta-button" id="ctaButton">
+            <a href="https://wa.me/59892980319?text=Hola%20Ferant%20me%20interesa%20conocer%20más%20sobre%20sus%20servicios" class="cta-button" target="_blank" rel="noopener noreferrer">
                 Potenciar mi negocio
                 <i class="fa-solid fa-arrow-right" style="font-size: 0.85rem;"></i>
-            </button>
+            </a>
         </div>
 
         <!-- Scroll Indicator -->
@@ -1589,46 +1705,15 @@
         </div>
     </section>
 
-    <!-- Contacto Section -->
-    <section class="contacto-section" id="contacto">
-        <div class="contacto-header">
-            <h2 class="contacto-title">¿Listo para potenciar tu marca?</h2>
-            <p class="contacto-subtitle">Cuéntanos sobre tu proyecto y nos encargaremos de transformar tu visión en realidad.</p>
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeModal">&times;</span>
+            <img id="modalImage" class="modal-image" src="" alt="Galería de Montajes">
+            <button class="modal-nav modal-prev" id="prevBtn">❮</button>
+            <button class="modal-nav modal-next" id="nextBtn">❯</button>
         </div>
-
-        <div class="contacto-container">
-            <form class="contact-form" id="contactForm">
-                <div class="form-group">
-                    <label class="form-label" for="nombre">📝 Nombre Completo</label>
-                    <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Juan Pérez" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="email">✉️ Email</label>
-                    <input class="form-input" type="email" id="email" name="email" placeholder="tu@empresa.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="empresa">🏢 Empresa</label>
-                    <input class="form-input" type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="mensaje">💬 Cuéntanos tu proyecto</label>
-                    <textarea class="form-textarea" id="mensaje" name="mensaje" placeholder="¿Qué necesitas? ¿Cuáles son tus objetivos? ¿Cuándo necesitas que esté listo?" required></textarea>
-                </div>
-
-                <button type="submit" class="submit-button">
-                    Enviar Mensaje
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-
-                <div class="form-success-message" id="successMessage">
-                    ✓ ¡Perfecto! Recibimos tu mensaje. Nos pondremos en contacto pronto.
-                </div>
-            </form>
-        </div>
-    </section>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -1758,45 +1843,71 @@
             });
         });
 
-        // Contact Form Functionality
-        const contactForm = document.getElementById('contactForm');
-        const successMessage = document.getElementById('successMessage');
+        // Image Gallery Modal Functionality
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeModal = document.getElementById('closeModal');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        const montajeImages = [
+            'https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje1.svg',
+            'https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje2.svg',
+            'https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje3.svg',
+            'https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje4.svg',
+            'https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje5.svg',
+            'https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje6.svg'
+        ];
+        
+        let currentImageIndex = 0;
 
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Get form values
-                const nombre = document.getElementById('nombre').value;
-                const email = document.getElementById('email').value;
-                const empresa = document.getElementById('empresa').value;
-                const mensaje = document.getElementById('mensaje').value;
-
-                // Log form data (en producción, aquí iría el envío a un servidor)
-                console.log('Formulario enviado:', {
-                    nombre: nombre,
-                    email: email,
-                    empresa: empresa,
-                    mensaje: mensaje,
-                    fecha: new Date().toLocaleString()
-                });
-
-                // Show success message
-                successMessage.classList.add('show');
-
-                // Reset form
-                contactForm.reset();
-
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMessage.classList.remove('show');
-                }, 5000);
-
-                // Optional: Scroll to success message
-                setTimeout(() => {
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
+        // Open modal when clicking on montaje cards
+        document.querySelectorAll('.montaje-card').forEach((card, index) => {
+            card.addEventListener('click', function() {
+                currentImageIndex = index;
+                modalImage.src = montajeImages[index];
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
             });
-        }
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside the image
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Previous image
+        prevBtn.addEventListener('click', function() {
+            currentImageIndex = (currentImageIndex - 1 + montajeImages.length) % montajeImages.length;
+            modalImage.src = montajeImages[currentImageIndex];
+        });
+
+        // Next image
+        nextBtn.addEventListener('click', function() {
+            currentImageIndex = (currentImageIndex + 1) % montajeImages.length;
+            modalImage.src = montajeImages[currentImageIndex];
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (modal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') prevBtn.click();
+                if (e.key === 'ArrowRight') nextBtn.click();
+                if (e.key === 'Escape') {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
 </body>
 </html>
