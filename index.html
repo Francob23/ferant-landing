@@ -313,6 +313,11 @@
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
+            .servicios-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
             .nav-links {
                 gap: 1.5rem;
                 font-size: 0.9rem;
@@ -373,7 +378,7 @@
 
         .servicios-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2.5rem;
             max-width: 1300px;
             margin: 0 auto;
@@ -500,6 +505,11 @@
         }
 
         @media (max-width: 480px) {
+            .servicios-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
             .servicios-section {
                 padding: 3rem 1rem;
             }
@@ -910,6 +920,122 @@
             margin: 0;
         }
 
+        /* SPORT DESIGN HERO SECTION */
+        .sport-design-section {
+            position: relative;
+            background: var(--primary-black);
+            padding: 6rem 2rem;
+            z-index: 20;
+        }
+
+        .sport-design-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease both;
+        }
+
+        .sport-design-title {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sport-design-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .montajes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .montaje-card {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(235, 231, 23, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+            animation: fadeInUp 1s ease backwards;
+        }
+
+        .montaje-card:nth-child(1) { animation-delay: 0.1s; }
+        .montaje-card:nth-child(2) { animation-delay: 0.2s; }
+        .montaje-card:nth-child(3) { animation-delay: 0.3s; }
+        .montaje-card:nth-child(4) { animation-delay: 0.4s; }
+        .montaje-card:nth-child(5) { animation-delay: 0.5s; }
+        .montaje-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .montaje-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: brightness(0.85) contrast(1.1);
+        }
+
+        .montaje-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--accent-yellow);
+            box-shadow: 0 20px 60px rgba(235, 231, 23, 0.2);
+        }
+
+        .montaje-card:hover .montaje-image {
+            filter: brightness(1.1) contrast(1.2);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .sport-design-section {
+                padding: 4rem 1.5rem;
+            }
+
+            .montajes-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .sport-design-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sport-design-section {
+                padding: 3rem 1rem;
+            }
+
+            .montajes-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .sport-design-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .sport-design-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .montaje-card {
+                aspect-ratio: 1;
+            }
+        }
+
         /* CONTACTO SECTION */
         .contacto-section {
             position: relative;
@@ -1312,7 +1438,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-content">
-            <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/LOGO%206.svg" alt="Ferant" class="logo-img">
+            <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/ferant.svg" alt="Ferant" class="logo-img">
             <ul class="nav-links">
                 <li><a class="nav-link" href="#servicios">Servicios</a></li>
                 <li><a class="nav-link" href="#clientes">Clientes</a></li>
@@ -1434,6 +1560,35 @@
         </div>
     </section>
 
+    <!-- Sport Design Section -->
+    <section class="sport-design-section" id="sport-design">
+        <div class="sport-design-header">
+            <h2 class="sport-design-title">Sport Design - Montajes Creativos</h2>
+            <p class="sport-design-subtitle">Nuestros mejores proyectos de diseño, montajes dinámicos y contenido visual que transforman ideas en experiencias visuales impactantes.</p>
+        </div>
+
+        <div class="montajes-grid">
+            <div class="montaje-card">
+                <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje1.svg" alt="Montaje 1" class="montaje-image">
+            </div>
+            <div class="montaje-card">
+                <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje2.svg" alt="Montaje 2" class="montaje-image">
+            </div>
+            <div class="montaje-card">
+                <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje3.svg" alt="Montaje 3" class="montaje-image">
+            </div>
+            <div class="montaje-card">
+                <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje4.svg" alt="Montaje 4" class="montaje-image">
+            </div>
+            <div class="montaje-card">
+                <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje5.svg" alt="Montaje 5" class="montaje-image">
+            </div>
+            <div class="montaje-card">
+                <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje6.svg" alt="Montaje 6" class="montaje-image">
+            </div>
+        </div>
+    </section>
+
     <!-- Contacto Section -->
     <section class="contacto-section" id="contacto">
         <div class="contacto-header">
@@ -1479,7 +1634,7 @@
     <footer>
         <div class="footer-content">
             <!-- Logo -->
-            <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/LOGO%206.svg" alt="Ferant" class="footer-logo-img">
+            <img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/ferant.svg" alt="Ferant" class="footer-logo-img">
 
             <!-- Navigation -->
             <ul class="footer-nav">
