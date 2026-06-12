@@ -21,17 +21,9 @@
     <meta name="twitter:description" content="Marketing digital, estrategia e IA para empresas en Uruguay.">
 
     <!-- secure-code-guardian: Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self';
-      script-src 'self' 'unsafe-inline';
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
-      font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
-      img-src 'self' data: https://raw.githubusercontent.com;
-      connect-src 'self' https://formspree.io;
-      frame-ancestors 'none';
-    ">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://raw.githubusercontent.com; connect-src 'self' https://formspree.io;">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3H5sntJULC9Z51ZmMhZS2VLsIDoklPlsrtw9GEROS2iy8jvyalMiRIL8chr20tXDxz2GF0x8+AQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         * {
             margin: 0;
@@ -628,138 +620,57 @@
 
         .carrusel-wrapper {
             position: relative;
-            overflow: hidden;
-            background: var(--primary-black);
-        }
-
-        .carrusel-gradient {
-            position: absolute;
-            top: 0;
-            width: 150px;
-            height: 100%;
-            z-index: 30;
-            pointer-events: none;
-            display: block;
-        }
-
-        .carrusel-gradient-left {
-            left: 0;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-        }
-
-        .carrusel-gradient-right {
-            right: 0;
-            background: linear-gradient(270deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-        }
-
-        .carrusel-content {
-            display: flex;
-            gap: 3rem;
-            animation: scrollCarrusel 35s linear infinite;
             padding: 2rem 0;
         }
 
-        .carrusel-content:hover {
-            animation-play-state: paused;
+        .carrusel-content {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        @media (max-width: 768px) {
-            .carrusel-wrapper {
-                overflow: visible;
-                padding: 0 2rem;
-            }
-
-            .carrusel-gradient {
-                display: none;
-            }
-
+        @media (max-width: 900px) {
             .carrusel-content {
-                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .carrusel-content {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 1.5rem;
-                animation: none;
-                padding: 2rem 0;
-            }
-
-            .carrusel-content:hover {
-                animation-play-state: running;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .carrusel-wrapper {
-                padding: 0 1rem;
-            }
-
-            .carrusel-content {
                 gap: 1rem;
-                padding: 1.5rem 0;
             }
         }
 
         .logo-item {
-            min-width: 200px;
-            height: 120px;
-            background: linear-gradient(135deg, rgba(235, 231, 23, 0.1), rgba(235, 231, 23, 0.05));
-            border: 2px solid rgba(235, 231, 23, 0.3);
+            height: 110px;
+            background: linear-gradient(135deg, rgba(235, 231, 23, 0.08), rgba(235, 231, 23, 0.03));
+            border: 1px solid rgba(235, 231, 23, 0.2);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
-            flex-shrink: 0;
             padding: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .logo-item {
-                min-width: auto;
-                width: 100%;
-                height: 120px;
-                flex-shrink: 1;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo-item {
-                height: 110px;
-            }
-        }
-
-        .logo-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(235, 231, 23, 0.1), transparent);
             opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease,
+                        border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Staggered fade-in — applied via JS adding .logo-visible */
+        .logo-item.logo-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .logo-item:hover {
             border-color: var(--accent-yellow);
-            opacity: 1;
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(235, 231, 23, 0.15);
-        }
-
-        .logo-item:hover::before {
-            opacity: 1;
-        }
-
-        .logo-text {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.05em;
-            transition: color 0.4s ease;
-        }
-
-        .logo-item:hover .logo-text {
-            color: var(--accent-yellow);
+            box-shadow: 0 8px 30px rgba(235, 231, 23, 0.12);
+            transform: translateY(-4px);
         }
 
         .logo-image {
@@ -800,24 +711,6 @@
             color: var(--accent-yellow);
         }
 
-        @keyframes scrollCarrusel {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* DUPLICAR CONTENIDO PARA EFECTO INFINITO */
-        .carrusel-content-clone {
-            animation: scrollCarrusel 30s linear infinite;
-        }
-
-        .carrusel-content-clone:hover {
-            animation-play-state: paused;
-        }
-
         @media (max-width: 768px) {
             .clientes-section {
                 padding: 4rem 1.5rem;
@@ -848,10 +741,6 @@
 
             .carrusel-content {
                 gap: 1rem;
-            }
-
-            .carrusel-gradient {
-                width: 100px;
             }
 
             .logo-text {
@@ -1905,6 +1794,16 @@
         }
 
         @media (max-width: 768px) {
+            .whatsapp-button {
+                width: 52px;
+                height: 52px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+    </style>
+</head>
 <body>
     <!-- Grid Background -->
     <div class="grid-background">
@@ -1936,10 +1835,10 @@
         <div class="hero-content">
             <div class="hero-eyebrow reveal">Agencia de marketing digital · Uruguay</div>
             <h1 class="hero-title reveal reveal-delay-1">
-                Más clientes.<br>Menos <span class="hero-title-accent">esfuerzo tuyo.</span>
+                Potencia tu empresa,<br><span class="hero-title-accent">optimiza tus tiempos.</span>
             </h1>
             <p class="hero-description reveal reveal-delay-2">
-                Gestionamos tu publicidad en Meta, Google y redes sociales para que vos te enfocás en tu negocio. Sin vueltas, con resultados medibles.
+                Gestionamos tu publicidad en Meta, Google y redes sociales mientras vos te enfocas en tu negocio. Sin vueltas, con resultados medibles.
             </p>
             <div class="hero-ctas reveal reveal-delay-3">
                 <a href="https://wa.me/59892980319?text=Hola!%20Me%20interesa%20saber%20más%20sobre%20sus%20servicios!" class="cta-button" target="_blank" rel="noopener noreferrer">
@@ -2042,8 +1941,6 @@
             <h2 class="clientes-title">Empresas uruguayas que confían en nosotros</h2>
         </div>
         <div class="carrusel-wrapper reveal reveal-delay-2">
-            <div class="carrusel-gradient carrusel-gradient-left"></div>
-            <div class="carrusel-gradient carrusel-gradient-right"></div>
             <div class="carrusel-content" id="carrusel">
                 <div class="logo-item"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/clinicacenit.svg" alt="Clínica Cenit" class="logo-image"></div>
                 <div class="logo-item"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/cuchillosnuestros.svg" alt="Cuchillos Nuestros" class="logo-image"></div>
@@ -2263,22 +2160,22 @@
         }
       });
 
-      // ── Carrusel infinito ──────────────────────────────────────────────────────
-      const carrusel = document.getElementById('carrusel');
-      if (carrusel) {
-        Array.from(carrusel.children).forEach(item => {
-          const clone = item.cloneNode(true);
-          clone.setAttribute('aria-hidden', 'true');
-          carrusel.appendChild(clone);
+      // ── Clientes — staggered fade-in, no cloning ──────────────────────────────
+      const logoItems = Array.from(document.querySelectorAll('.logo-item'));
+
+      const logoObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const items = Array.from(entry.target.querySelectorAll('.logo-item'));
+          items.forEach((item, i) => {
+            setTimeout(() => item.classList.add('logo-visible'), i * 80);
+          });
+          logoObserver.unobserve(entry.target);
         });
-      }
+      }, { threshold: 0.15 });
 
-      const carruselWrapper = document.querySelector('.carrusel-wrapper');
-      const pauseCarrusel  = () => document.querySelectorAll('.carrusel-content').forEach(el => { el.style.animationPlayState = 'paused'; });
-      const resumeCarrusel = () => document.querySelectorAll('.carrusel-content').forEach(el => { el.style.animationPlayState = 'running'; });
-
-      carruselWrapper?.addEventListener('mouseenter', pauseCarrusel);
-      carruselWrapper?.addEventListener('mouseleave', resumeCarrusel);
+      const carruselContent = document.getElementById('carrusel');
+      if (carruselContent) logoObserver.observe(carruselContent);
 
       // ── Gallery Modal ──────────────────────────────────────────────────────────
       const modal        = document.getElementById('imageModal');
