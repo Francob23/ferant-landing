@@ -7,6 +7,8 @@
     <meta name="description" content="Agencia de marketing digital en Uruguay. Meta Ads, Google Ads, Social Media, Branding, IA y Filmmaker. Estrategia y resultados reales.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://ferantuy.com/">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/iconoweb.png">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/iconoweb.png">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -1333,8 +1335,32 @@
             line-height: 1.65;
         }
 
-        /* ── Form row (2-col on desktop) ────────────────────────────────── */
-        .form-row {
+        .contacto-cta-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cta-button--large {
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+        }
+
+        .contacto-email-alt {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .contacto-email-alt a {
+            color: var(--accent-yellow);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contacto-email-alt a:hover {
+            text-decoration: underline;
+        }
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
@@ -1998,49 +2024,19 @@
         </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════
-         CONTACTO — friction-reduced form (page-cro + form-cro)
-         copywriting: urgency without pressure, clear next step
-    ════════════════════════════════════════════════════════ -->
     <section class="contacto-section" id="contacto">
         <div class="contacto-header reveal">
             <div class="section-eyebrow">Contacto</div>
             <h2 class="contacto-title">Hablemos de tu negocio</h2>
-            <p class="contacto-subtitle">Completá el formulario y te respondemos en menos de 24 horas. Sin compromiso.</p>
+            <p class="contacto-subtitle">Escribinos por WhatsApp y te respondemos en menos de 24 horas. Sin compromiso.</p>
         </div>
-        <div class="contacto-container reveal reveal-delay-2">
-            <form class="contact-form" id="contactForm" action="https://formspree.io/f/ferantuy@gmail.com" method="POST">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="nombre">Nombre</label>
-                        <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Tu nombre" maxlength="100" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="tu@email.com" maxlength="254" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="empresa">Empresa / Rubro <span class="form-optional">(opcional)</span></label>
-                    <input type="text" id="empresa" name="empresa" class="form-input" placeholder="Ej: Ferretería, Clínica, Estudio..." maxlength="100">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="mensaje">¿En qué te podemos ayudar?</label>
-                    <textarea id="mensaje" name="mensaje" class="form-textarea" placeholder="Contanos brevemente qué necesitás o qué problema querés resolver..." maxlength="2000" required></textarea>
-                </div>
-                <button type="submit" class="submit-button" id="submitBtn">
-                    Enviar mensaje <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <p class="form-whatsapp-alt">
-                    ¿Preferís hablar directo? <a href="https://wa.me/59892980319" target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
-                </p>
-                <div class="form-success-message" id="formSuccess" role="status" aria-live="polite">
-                    ✓ Mensaje recibido. Te contactamos antes de las 24 horas.
-                </div>
-                <div class="form-error-message" id="formError" role="alert" aria-live="assertive">
-                    No se pudo enviar. <a href="mailto:ferantuy@gmail.com">Escribinos directamente.</a>
-                </div>
-            </form>
+        <div class="contacto-cta-wrap reveal reveal-delay-2">
+            <a href="https://wa.me/59892980319?text=Hola!%20Me%20interesa%20saber%20más%20sobre%20sus%20servicios!" class="cta-button cta-button--large" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-whatsapp"></i>
+                Escribinos por WhatsApp
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <p class="contacto-email-alt">O si preferís: <a href="mailto:ferantuy@gmail.com">ferantuy@gmail.com</a></p>
         </div>
     </section>
 
