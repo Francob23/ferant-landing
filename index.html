@@ -65,6 +65,106 @@
             opacity: 0.45;
         }
 
+        /* ── Floating brand icons layer (DOM/SVG, interactive) ─────────────── */
+        .floating-icons-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 21;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: auto;
+            cursor: pointer;
+            will-change: transform;
+            filter: drop-shadow(0 0 6px rgba(235, 231, 23, var(--fi-glow, 0.25)));
+            transition: filter 0.25s ease;
+        }
+
+        .floating-icon svg {
+            display: block;
+            color: var(--accent-yellow);
+            stroke: var(--accent-yellow);
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: var(--fi-alpha, 0.5);
+            transition: opacity 0.25s ease;
+        }
+
+        .floating-icon:hover svg {
+            opacity: min(1, calc(var(--fi-alpha, 0.5) + 0.35));
+        }
+
+        .floating-icon:hover {
+            --fi-glow: 0.55;
+        }
+
+        .floating-icon.is-clicked {
+            animation: floating-icon-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes floating-icon-pop {
+            0%   { filter: drop-shadow(0 0 6px rgba(235, 231, 23, var(--fi-glow, 0.25))); }
+            40%  { filter: drop-shadow(0 0 16px rgba(235, 231, 23, 0.8)); }
+            100% { filter: drop-shadow(0 0 6px rgba(235, 231, 23, var(--fi-glow, 0.25))); }
+        }
+
+        .floating-icon.is-clicked svg {
+            animation: floating-icon-scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes floating-icon-scale {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+
+        .floating-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(235, 231, 23, 0.35) 0%, rgba(235, 231, 23, 0) 70%);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .pulse-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
+            border: 1.5px solid var(--accent-yellow);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.65;
+            animation: pulse-expand 0.8s ease-out forwards;
+        }
+
+        @keyframes pulse-expand {
+            from { transform: scale(0.3); opacity: 0.65; }
+            to   { transform: scale(3.4); opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .floating-icon.is-clicked,
+            .floating-icon.is-clicked svg {
+                animation: none;
+            }
+        }
+
         .grid-background {
             position: fixed;
             top: 0;
@@ -1859,6 +1959,7 @@
 
     <!-- Energy flow canvas -->
     <canvas id="energyCanvas"></canvas>
+    <div class="floating-icons-layer" id="floatingIconsLayer" aria-hidden="true"></div>
 
     <!-- Navbar -->
     <nav class="navbar">
@@ -2107,6 +2208,10 @@
      */
     document.addEventListener('DOMContentLoaded', () => {
 
+      // Shared viewport size — read by both the energy canvas and the floating icons layer.
+      let W = window.innerWidth;
+      let H = window.innerHeight;
+
       // ── Energy flow canvas ─────────────────────────────────────────────────
       const canvas  = document.getElementById('energyCanvas');
       const ctx     = canvas?.getContext('2d');
@@ -2117,8 +2222,6 @@
         const CONNECTION_DIST = 180;
         const SPEED = 0.4;
 
-        let W = window.innerWidth;
-        let H = window.innerHeight;
         canvas.width  = W;
         canvas.height = H;
 
@@ -2193,6 +2296,149 @@
 
         drawFrame();
       }
+      // ── Floating brand icons (DOM/SVG, interactive, click = expanding pulse) ──
+      const iconLayer = document.getElementById('floatingIconsLayer');
+
+      if (iconLayer) {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /** 24x24 viewBox line-icon markup, stroke inherited from CSS (currentColor via var(--accent-yellow)). */
+        const ICON_SVGS = [
+          // Megaphone
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><path d="M4 10.5v3a1.5 1.5 0 0 0 1.5 1.5H7l1 4h2l-1-4h1l8.5 4V6.5L10 10.5H5.5A1.5 1.5 0 0 0 4 10.5Z"/><path d="M19 9.5a3.5 3.5 0 0 1 0 5"/></svg>',
+          // Trending up
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><path d="M3 17 9.5 10.5 13.5 14.5 21 7"/><path d="M15 7h6v6"/></svg>',
+          // Play
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><circle cx="12" cy="12" r="9"/><path d="M10 8.5 16 12 10 15.5Z" fill="currentColor" stroke="none"/></svg>',
+          // Chat / message
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
+          // Sparkle
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/><circle cx="12" cy="12" r="3"/></svg>',
+          // Zap / lightning
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>',
+          // Target
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>',
+          // Rocket
+          '<svg viewBox="0 0 24 24" width="{S}" height="{S}"><path d="M12 2c2.5 2 4 5.5 4 9.5 0 2-.6 3.7-1.3 5L12 20l-2.7-3.5C8.6 15.2 8 13.5 8 11.5 8 7.5 9.5 4 12 2Z"/><circle cx="12" cy="10" r="1.6"/><path d="M9 15.5 6 17l.7-3.2M15 15.5l3 1.5-.7-3.2"/></svg>',
+        ];
+
+        const ICON_COUNT = 8;
+        const GLOW_COUNT = 2;
+        const SPEED = prefersReducedMotion ? 0 : 0.22;
+
+        /** @typedef {{ el:HTMLElement, x:number, y:number, vx:number, vy:number, rotation:number, rotationSpeed:number, bobPhase:number, bobSpeed:number, bobAmount:number, size:number }} FloatingItem */
+
+        /** @type {FloatingItem[]} */
+        const floatingItems = [];
+
+        const spawnIcon = () => {
+          const size  = Math.random() * 20 + 44;
+          const alpha = Math.random() * 0.16 + 0.30;
+          const markup = ICON_SVGS[Math.floor(Math.random() * ICON_SVGS.length)].replaceAll('{S}', String(size));
+
+          const el = document.createElement('div');
+          el.className = 'floating-icon';
+          el.style.setProperty('--fi-alpha', alpha.toFixed(2));
+          el.style.setProperty('--fi-glow', (alpha * 1.6).toFixed(2));
+          el.innerHTML = markup;
+          iconLayer.appendChild(el);
+
+          const spin = (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 0.6 + 0.4);
+
+          const item = {
+            el,
+            x:             Math.random() * W,
+            y:             Math.random() * H,
+            vx:            (Math.random() - 0.5) * SPEED,
+            vy:            (Math.random() - 0.5) * SPEED,
+            rotation:      Math.random() * 360,
+            rotationSpeed: prefersReducedMotion ? 0 : spin,
+            bobPhase:      Math.random() * Math.PI * 2,
+            bobSpeed:      Math.random() * 0.006 + 0.004,
+            bobAmount:     prefersReducedMotion ? 0 : Math.random() * 10 + 8,
+            size,
+          };
+          floatingItems.push(item);
+
+          el.addEventListener('click', () => spawnPulse(item));
+        };
+
+        const spawnGlow = () => {
+          const size = Math.random() * 120 + 140;
+          const el = document.createElement('div');
+          el.className = 'floating-glow';
+          el.style.width  = `${size}px`;
+          el.style.height = `${size}px`;
+          iconLayer.appendChild(el);
+
+          floatingItems.push({
+            el,
+            x:             Math.random() * W,
+            y:             Math.random() * H,
+            vx:            (Math.random() - 0.5) * SPEED * 0.6,
+            vy:            (Math.random() - 0.5) * SPEED * 0.6,
+            rotation:      0,
+            rotationSpeed: 0,
+            bobPhase:      Math.random() * Math.PI * 2,
+            bobSpeed:      Math.random() * 0.004 + 0.003,
+            bobAmount:     prefersReducedMotion ? 0 : Math.random() * 10 + 8,
+            size,
+            isGlow: true,
+          });
+        };
+
+        /** Spawns two staggered expanding rings at the icon's current screen position. */
+        const spawnPulse = (item) => {
+          item.el.classList.remove('is-clicked');
+          void item.el.offsetWidth; // restart CSS animation
+          item.el.classList.add('is-clicked');
+
+          const rect = item.el.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+
+          [0, 120].forEach((delay) => {
+            setTimeout(() => {
+              const ring = document.createElement('div');
+              ring.className = 'pulse-ring';
+              ring.style.left = `${cx}px`;
+              ring.style.top  = `${cy}px`;
+              document.body.appendChild(ring);
+              ring.addEventListener('animationend', () => ring.remove());
+            }, delay);
+          });
+        };
+
+        for (let i = 0; i < ICON_COUNT; i++) spawnIcon();
+        for (let i = 0; i < GLOW_COUNT; i++) spawnGlow();
+
+        const stepFloatingItems = () => {
+          for (const item of floatingItems) {
+            item.x += item.vx;
+            item.y += item.vy;
+            item.rotation += item.rotationSpeed;
+            item.bobPhase += item.bobSpeed;
+
+            const margin = item.size + 40;
+            if (item.x < -margin) item.x = W + margin;
+            if (item.x > W + margin) item.x = -margin;
+            if (item.y < -margin) item.y = H + margin;
+            if (item.y > H + margin) item.y = -margin;
+
+            const bob = Math.sin(item.bobPhase) * item.bobAmount;
+            const ty  = item.y + bob;
+
+            item.el.style.transform = item.isGlow
+              ? `translate3d(${item.x - item.size / 2}px, ${ty - item.size / 2}px, 0)`
+              : `translate3d(${item.x}px, ${ty}px, 0) rotate(${item.rotation}deg)`;
+          }
+
+          requestAnimationFrame(stepFloatingItems);
+        };
+
+        stepFloatingItems();
+      }
+
       const navbar = document.querySelector('.navbar');
       window.addEventListener('scroll', () => {
         navbar?.classList.toggle('scrolled', window.scrollY > 50);
