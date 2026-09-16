@@ -1060,7 +1060,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(235, 231, 23, 0.12);
+            background: var(--accent-yellow);
             border: 2px solid var(--accent-yellow);
             border-radius: 50%;
             text-decoration: none;
@@ -1074,19 +1074,16 @@
             height: 100%;
             object-fit: contain;
             object-position: center;
-            filter: brightness(1) drop-shadow(0 0 0px rgba(235, 231, 23, 0));
+            filter: brightness(0);
             transition: all 0.3s ease;
         }
 
         .social-icon:hover {
-            background: var(--accent-yellow);
-            border-color: var(--accent-yellow);
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(235, 231, 23, 0.4);
         }
 
         .social-icon:hover .social-icon-img {
-            filter: brightness(0) drop-shadow(0 0 0px rgba(0, 0, 0, 0));
             transform: scale(1.15);
         }
 
