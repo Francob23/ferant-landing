@@ -1247,50 +1247,87 @@
             line-height: 1.6;
         }
 
-        .montajes-grid {
+        .montajes-marquee {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
             max-width: 1300px;
             margin: 0 auto;
+            height: 620px;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+            mask-image: linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+        }
+
+        .montaje-column {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .montaje-track {
+            display: flex;
+            flex-direction: column;
+            animation: montaje-scroll-up 26s linear infinite;
+        }
+
+        .montaje-column--b .montaje-track {
+            animation-name: montaje-scroll-down;
+            animation-duration: 32s;
+        }
+
+        .montaje-column--c .montaje-track {
+            animation-duration: 22s;
+        }
+
+        .montaje-column:hover .montaje-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes montaje-scroll-up {
+            from { transform: translateY(0); }
+            to   { transform: translateY(-50%); }
+        }
+
+        @keyframes montaje-scroll-down {
+            from { transform: translateY(-50%); }
+            to   { transform: translateY(0); }
         }
 
         .montaje-card {
             position: relative;
             aspect-ratio: 1;
+            flex: none;
+            margin-bottom: 2rem;
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid rgba(235, 231, 23, 0.15);
             background: rgba(0, 0, 0, 0.4);
         }
 
-        .montaje-card:nth-child(1) { }
-        .montaje-card:nth-child(2) { }
-        .montaje-card:nth-child(3) { }
-        .montaje-card:nth-child(4) { }
-        .montaje-card:nth-child(5) { }
-        .montaje-card:nth-child(6) { }
+        .montaje-card[data-clone] {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .montaje-card:hover {
+            border-color: var(--accent-yellow);
+            box-shadow: 0 12px 40px rgba(235, 231, 23, 0.18);
+        }
 
         .montaje-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: brightness(0.85) contrast(1.1);
-        }
-
-        .montaje-card:hover {
-            transform: translateY(-12px);
-            border-color: var(--accent-yellow);
-            box-shadow: 0 20px 60px rgba(235, 231, 23, 0.2);
+            filter: brightness(0.88) contrast(1.08);
+            transition: filter 0.3s ease;
         }
 
         .montaje-card:hover .montaje-image {
-            filter: brightness(1.1) contrast(1.2);
-            transform: scale(1.5);
+            filter: brightness(1.05) contrast(1.12);
         }
 
         /* ── Section eyebrow label ─────────────────────────────────────── */
@@ -1537,13 +1574,20 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 900px) {
             .sport-design-section {
                 padding: 4rem 1.5rem;
             }
 
-            .montajes-grid {
+            .montajes-marquee {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1.5rem;
+                height: 520px;
+            }
+
+            .montaje-column--c {
+                display: none;
             }
 
             .sport-design-title {
@@ -1556,9 +1600,14 @@
                 padding: 3rem 1rem;
             }
 
-            .montajes-grid {
+            .montajes-marquee {
                 grid-template-columns: 1fr;
                 gap: 1.2rem;
+                height: 420px;
+            }
+
+            .montaje-column--b {
+                display: none;
             }
 
             .sport-design-title {
@@ -1568,10 +1617,6 @@
 
             .sport-design-subtitle {
                 font-size: 0.9rem;
-            }
-
-            .montaje-card {
-                aspect-ratio: 1;
             }
         }
 
@@ -2114,13 +2159,31 @@
             <h2 class="sport-design-title">Trabajo real, resultados reales</h2>
             <p class="sport-design-subtitle">Una muestra de lo que producimos — diseño, video y contenido para nuestros clientes.</p>
         </div>
-        <div class="montajes-grid">
-            <div class="montaje-card reveal reveal-delay-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje1.svg" alt="Proyecto 1" class="montaje-image"></div>
-            <div class="montaje-card reveal reveal-delay-2"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje2.svg" alt="Proyecto 2" class="montaje-image"></div>
-            <div class="montaje-card reveal reveal-delay-3"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje3.svg" alt="Proyecto 3" class="montaje-image"></div>
-            <div class="montaje-card reveal reveal-delay-4"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje4.svg" alt="Proyecto 4" class="montaje-image"></div>
-            <div class="montaje-card reveal reveal-delay-5"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje5.svg" alt="Proyecto 5" class="montaje-image"></div>
-            <div class="montaje-card reveal reveal-delay-6"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje6.svg" alt="Proyecto 6" class="montaje-image"></div>
+        <div class="montajes-marquee reveal reveal-delay-2">
+            <div class="montaje-column montaje-column--a">
+                <div class="montaje-track">
+                    <div class="montaje-card"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje1.svg" alt="Proyecto 1" class="montaje-image"></div>
+                    <div class="montaje-card"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje2.svg" alt="Proyecto 2" class="montaje-image"></div>
+                    <div class="montaje-card" data-clone aria-hidden="true" tabindex="-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje1.svg" alt="" class="montaje-image"></div>
+                    <div class="montaje-card" data-clone aria-hidden="true" tabindex="-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje2.svg" alt="" class="montaje-image"></div>
+                </div>
+            </div>
+            <div class="montaje-column montaje-column--b">
+                <div class="montaje-track">
+                    <div class="montaje-card"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje3.svg" alt="Proyecto 3" class="montaje-image"></div>
+                    <div class="montaje-card"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje4.svg" alt="Proyecto 4" class="montaje-image"></div>
+                    <div class="montaje-card" data-clone aria-hidden="true" tabindex="-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje3.svg" alt="" class="montaje-image"></div>
+                    <div class="montaje-card" data-clone aria-hidden="true" tabindex="-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje4.svg" alt="" class="montaje-image"></div>
+                </div>
+            </div>
+            <div class="montaje-column montaje-column--c">
+                <div class="montaje-track">
+                    <div class="montaje-card"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje5.svg" alt="Proyecto 5" class="montaje-image"></div>
+                    <div class="montaje-card"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje6.svg" alt="Proyecto 6" class="montaje-image"></div>
+                    <div class="montaje-card" data-clone aria-hidden="true" tabindex="-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje5.svg" alt="" class="montaje-image"></div>
+                    <div class="montaje-card" data-clone aria-hidden="true" tabindex="-1"><img src="https://raw.githubusercontent.com/Francob23/ferant-landing/main/assets/montaje6.svg" alt="" class="montaje-image"></div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2537,7 +2600,7 @@
       const nextBtn      = document.getElementById('nextBtn');
 
       // DRY: read image sources from DOM — no magic string duplication
-      const montajeCards  = Array.from(document.querySelectorAll('.montaje-card'));
+      const montajeCards  = Array.from(document.querySelectorAll('.montaje-card:not([data-clone])'));
       const montajeImages = montajeCards
         .map(card => card.querySelector('img')?.src ?? '')
         .filter(Boolean);
