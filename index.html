@@ -309,7 +309,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 7rem 2rem 2rem;
             z-index: 10;
             margin-top: 0;
         }
@@ -359,6 +359,18 @@
             .hero-logo-3d {
                 width: 170px;
                 height: 170px;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        @media (min-width: 601px) and (max-height: 760px) {
+            .hero {
+                padding-top: 6rem;
+            }
+
+            .hero-logo-3d {
+                width: 160px;
+                height: 160px;
                 margin-bottom: 0.75rem;
             }
         }
@@ -940,7 +952,7 @@
             }
 
             .hero {
-                padding: 2rem 1rem;
+                padding: 6rem 1rem 2rem;
                 min-height: 85vh;
                 justify-content: center;
             }
@@ -2705,7 +2717,9 @@
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      // Hero is always the first screen: reveal it on load so its CTAs never stay hidden below the fold.
+      document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
 
       // ── Contact form — validate + async submit (fullstack-guardian) ────────────
       const contactForm = document.getElementById('contactForm');
